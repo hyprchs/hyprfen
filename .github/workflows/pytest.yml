@@ -36,6 +36,14 @@ jobs:
         with:
           enable-cache: true
 
+      - name: Cache Lichess test data
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: lichess-cache-${{ runner.os }}-2013-01-${{ hashFiles('src/hyprfen/lichess_sample.py') }}
+          restore-keys: |
+            lichess-cache-${{ runner.os }}-2013-01-
+
       - name: Install dependencies
         run: uv sync --frozen
 
