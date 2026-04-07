@@ -14,13 +14,20 @@ LICHESS_2013_01_PGN_FILENAME = "lichess_db_standard_rated_2013-01.pgn"
 FEN_SAMPLE_FILENAME_TEMPLATE = "first_{limit}_unique_fens.txt"
 
 
+def _project_root() -> Path:
+    file_path = Path(__file__).resolve()
+    for parent in file_path.parents:
+        if (parent / "pyproject.toml").exists():
+            return parent
+    raise RuntimeError("could not locate project root from hyprfen package path")
+
+
 def default_cache_dir() -> Path:
     env_cache_dir = os.environ.get("HYPRFEN_CACHE_DIR")
     if env_cache_dir:
         return Path(env_cache_dir)
 
-    project_root = Path(__file__).resolve().parents[3]
-    return project_root / ".cache"
+    return _project_root() / ".cache"
 
 
 def ensure_lichess_2013_01(cache_dir: Path | None = None) -> Path:
