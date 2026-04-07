@@ -1,3 +1,5 @@
+"""Public package exports for hyprfen."""
+
 from .codec import (
     EncodeStats,
     HyprfenError,
