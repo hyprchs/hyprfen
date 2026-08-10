@@ -27,6 +27,9 @@ The reconstruction test suite validates exact round-tripping over **100,000 uniq
 
 The tests also assert that the average encoded size is smaller than raw FEN on that dataset.
 
+The `bitstream-compatibility-v1` release also freezes the expected byte stream for each of
+those positions. CI verifies both decoding those bytes and reproducing them exactly.
+
 ## Usage
 
 ```bash
