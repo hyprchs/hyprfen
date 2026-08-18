@@ -8,7 +8,7 @@ import pytest
 from hyprfen import decode_fen, encode_fen
 
 
-def test_lichess_bitstream_compatibility() -> None:
+def test_bitstream_compatibility() -> None:
     vector_path = os.environ.get("HYPRFEN_BITSTREAM_VECTORS")
     if vector_path is None:
         pytest.skip("set HYPRFEN_BITSTREAM_VECTORS to run the conformance corpus")
