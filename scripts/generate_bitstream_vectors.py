@@ -45,6 +45,7 @@ def main() -> None:
     if not source_path.is_file():
         raise FileNotFoundError(f"the compressed Lichess source is required: {source_path}")
 
+    reference = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True, cwd=root).strip()
     source_digest = sha256(source_path)
     pgn_path = cache_dir / f"{source_path.stem}-{source_digest}.pgn"
     if not pgn_path.exists():
@@ -55,7 +56,7 @@ def main() -> None:
                 shutil.copyfileobj(reader, out)
         temporary.replace(pgn_path)
 
-    sample_path = cache_dir / f"first_100000_unique_fens-{source_digest}.txt"
+    sample_path = cache_dir / f"first_100000_unique_fens-{source_digest}-{reference}.txt"
     if sample_path.exists():
         fens = sample_path.read_text(encoding="utf-8").splitlines()
     else:
@@ -65,7 +66,6 @@ def main() -> None:
     if len(fens) != 100_000 or len(set(fens)) != 100_000:
         raise ValueError("expected 100000 unique FENs")
 
-    reference = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True, cwd=root).strip()
     temporary = args.output.with_suffix(args.output.suffix + ".part")
     with temporary.open("w", encoding="ascii", newline="\n") as f:
         f.write("# hyprfen bitstream compatibility vectors v1\n")
